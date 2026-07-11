@@ -7,7 +7,7 @@
 
 Este repositório documenta o passo a passo completo para transformar uma máquina rodando Fedora Linux em um laboratório de Inteligência Artificial 100% local e privado. 
 
-A stack utiliza o **Ollama** como motor de inferência (rodando o Llama 3.1) e o **Odysseus** (via Docker) como interface de workspace (Deep Research, Agentes e RAG de documentos).
+A stack utiliza o **Ollama** como motor de inferência (rodando o Llama 3.1) e o **[Odysseus](https://github.com/pewdiepie-archdaemon/odysseus)** (via Docker) como interface de workspace (Deep Research, Agentes e RAG de documentos).
 
 ## 📋 Pré-requisitos e Cenário Ideal
 
@@ -126,4 +126,36 @@ Em caso de anomalias na infraestrutura, utilize os comandos de diagnóstico abai
 
   - Garantir que as portas de serviço estão alocadas:
       `ss -tulpn | grep -E "7000|11434"`
+<br>
+
+## 👨‍💻 Desenvolvedor
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center" width="200">
+        <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People%20with%20professions/Man%20Technologist%20Light%20Skin%20Tone.png" width="100" style="border-radius: 50%;" alt="Avatar Patryck"><br>
+      </td>
+      <td align="center" width="500">
+        <h3>Patryck Pereira</h3>
+        <p>📍 Porto Alegre, RS | Estudante de ADS</p>
+        <code>Python</code> | <code>Linux (Fedora)</code> | <code>Cybersecurity</code> | <code>Cloud</code>
+      </td>
+      <td align="center" width="200">
+        <a href="https://www.linkedin.com/in/patryck-pereira-5104a6140/" target="_blank">
+          <img src="https://img.shields.io/badge/-LinkedIn-%230077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn">
+        </a>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div align="center">
+  <p>🚀 <b>Laboratório de IA Self-Hosted</b> construído para processamento privado e estudos em infraestrutura local.</p>
+  <img src="https://img.shields.io/badge/Status-Em%20Desenvolvimento-orange?style=flat-square" alt="Status">
+  <img src="https://img.shields.io/badge/Lab-Ambiente%20Controlado-red?style=flat-square" alt="Lab">
+</div>
+
+---
+*Copyright (c) 2026 Patryck Pereira. Licenciado sob os termos da MIT License.*
 
