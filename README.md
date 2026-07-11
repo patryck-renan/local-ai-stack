@@ -1,5 +1,10 @@
 # Self-Hosted AI Workspace no Fedora (Ollama + Odysseus)
 
+[![Fedora](https://img.shields.io/badge/Fedora-342B59?style=for-the-badge&logo=fedora&logoColor=white)]()
+[![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white)]()
+[![Ollama](https://img.shields.io/badge/Ollama-000000?style=for-the-badge&logo=ollama&logoColor=white)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)]()
+
 Este repositório documenta o passo a passo completo para transformar uma máquina rodando Fedora Linux em um laboratório de Inteligência Artificial 100% local e privado. 
 
 A stack utiliza o **Ollama** como motor de inferência (rodando o Llama 3.1) e o **Odysseus** (via Docker) como interface de workspace (Deep Research, Agentes e RAG de documentos).
@@ -9,6 +14,7 @@ A stack utiliza o **Ollama** como motor de inferência (rodando o Llama 3.1) e o
 - **Sistema Operacional:** Fedora Linux (testado no Fedora 43 Xfce).
 - **Memória RAM:** Pelo menos 16 GB disponíveis (livres ou em cache/buffers) para rodar modelos de 8B a 14B parâmetros de forma fluida e sem uso de Swap.
 - **Armazenamento:** Mínimo de 10 GB livres no SSD (para imagens do Docker e o arquivo do modelo LLM).
+- **Topologia de Rede (Local):** As portas `7000` (Odysseus UI) e `11434` (Ollama API) estarão em uso no host.
 
 ---
 
@@ -27,10 +33,11 @@ sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin d
 
 # Habilite o serviço e adicione seu usuário ao grupo Docker
 sudo systemctl enable --now docker
-sudo usermod -aG docker $USER    # Caso prefira pode usar 'sudo' com os comandos docker e pular esse comando
+sudo usermod -aG docker $USER    
 ```
 
-> Faça logout e login novamente no sistema para que as permissões do grupo sejam aplicadas
+🔐 Nota de Segurança (SecOps): Em ambientes de produção, adicionar o usuário ao grupo docker equivale a conceder privilégios de root. Para manter o princípio do menor privilégio, é recomendável não adicionar o usuário ao grupo e executar os comandos subsequentes do Docker com sudo explícito.
+
 
 ## 🧠 Passo 2: Instalação do Motor de IA (Ollama)
 
@@ -48,7 +55,7 @@ sudo systemctl status ollama
 ollama run llama3.1
 ```
 
-> Para sair do chat no terminal após o download, digite `/bye`
+💡 **Dica:** Para sair do chat no terminal após o download, digite `/bye`
 
 ## 🔧 Passo 3: Configuração de Rede (Systemd Override)
 
@@ -72,6 +79,8 @@ Aplique as mudanças:
 sudo systemctl daemon-reload
 sudo systemctl restart ollama
 ```
+
+🛡️ Firewalld: Embora o Ollama agora escute em todas as interfaces, o firewalld nativo do Fedora continua bloqueando acessos externos à porta 11434. A infraestrutura permanece segura e restrita à sua máquina local e à sub-rede do Docker.
 
 ## 🖥️ Passo 4: Instalação do Workspace (Odysseus)
 
@@ -101,5 +110,20 @@ docker compose logs odysseus | grep -i password
 4. No campo URL/Endpoint, preencha com o IP da bridge padrão do Docker: http://172.17.0.1:11434
 5. Clique em 'Add'. Na tela inicial de Chat, selecione o modelo llama3.1 no menu suspenso.
 
-> Pronto! Seu ambiente de IA 100% local, seguro e integrado está operacional.
+✅ Pronto! Seu ambiente de IA 100% local, seguro e integrado está operacional.
+
+---
+
+## 📊 Observabilidade e Troubleshooting
+
+Em caso de anomalias na infraestrutura, utilize os comandos de diagnóstico abaixo:
+
+  - Monitorar uso de recursos do contêiner em tempo real:
+      `sudo docker stats odysseus`
+
+  - Inspecionar os logs e o status de saída do Ollama:
+      `journalctl -u ollama -n 50 --no-pager`
+
+  - Garantir que as portas de serviço estão alocadas:
+      `ss -tulpn | grep -E "7000|11434"`
 
